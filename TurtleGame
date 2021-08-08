@@ -1,0 +1,114 @@
+import turtle
+import math
+import random
+import os
+
+#screen settings
+sc = turtle.Screen()
+sc.bgcolor("pink")
+sc.bgpic("stars.gif")
+
+#drawing border
+border = turtle.Turtle()
+border.color("black")
+border.speed(5)
+border.penup()
+border.hideturtle()
+border.setposition(-300,-300)
+border.pendown()
+border.showturtle()
+border.pensize(3)
+for side in range(4):
+    border.forward(600)
+    border.left(90) 
+border.hideturtle()
+
+#creating player turtle
+mii = turtle.Turtle()
+mii.color("pink")
+mii.shape("turtle")
+mii.penup()
+
+#animation speed
+mii.speed(0)
+
+#creating goals
+maxGoals = 4
+goals = []
+for count in range(maxGoals):
+    goals.append(turtle.Turtle())
+    goals[count].color("pink")
+    goals[count].shape("circle")
+    goals[count].penup()
+    goals[count].speed(0)
+    goals[count].setposition(random.randint(-300,300), random.randint(-300,300))
+    
+#movement speed
+speed=1
+
+#defining functions
+def turnleft():
+    mii.left(30)
+def turnright():
+    mii.right(30)
+def increasespeed():
+    global speed
+    speed += 1
+def isCollision(point1, point2):
+    d = math.sqrt(math.pow(point1.xcor()-point2.xcor(),2) + math.pow(point1.ycor()-point2.ycor(),2))
+    if d < 20:
+        return True
+    else:
+        return False
+    
+#setting keybord bindings
+turtle.listen()
+turtle.onkey(turnleft, "Left")
+turtle.onkey(turnright, "Right")
+turtle.onkey(increasespeed, "Up")
+
+while True:
+    mii.forward(speed)
+    #boundary checking
+    if mii.xcor() > 295 or mii.xcor() < -295:
+        mii.right(180)
+       
+    #boundary checking
+    if mii.ycor() > 295 or mii.ycor() < -295:
+        mii.left(180)
+ 
+    #move the goal
+    for count in range(maxGoals):
+        goals[count].forward(2)
+        
+        #boundary checking for the goal
+        if goals[count].xcor() > 290 or goals[count].xcor() < -290:
+            goals[count].right(180)
+
+        #boundary checking for the goal
+        if goals[count].ycor() > 290 or goals[count].ycor() < -290:
+            goals[count].left(180)
+
+            
+        #collision checking
+        if isCollision(mii, goals[count]):
+            goals[count].setposition(random.randint(-295,295), random.randint(-295,295))
+            goals[count].right(random.randint(0,360))
+            
+            
+
+
+        
+
+
+
+
+
+
+
+
+
+    
+
+
+
